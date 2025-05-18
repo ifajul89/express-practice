@@ -1,4 +1,4 @@
-import express, { Request, Response } from "express";
+import express, { NextFunction, Request, Response } from "express";
 
 const app = express();
 const port = 3000;
@@ -7,7 +7,29 @@ const port = 3000;
 app.use(express.json());
 app.use(express.text());
 
-app.get("/", (req: Request, res: Response) => {
+// middleware
+const logger = (req: Request, res: Response, next: NextFunction) => {
+  console.log(req.url, req.method, req.hostname);
+
+  next();
+};
+
+// app.get("/:userId", (req: Request, res: Response) => {
+//   console.log(req.params); // { userId: '89' }
+//   res.send("Server is running ⚡️");
+// });
+
+// app.get("/:userId/:userId2", (req: Request, res: Response) => {
+//   console.log(req.params); // { userId: '89', userId2: '29' }
+//   res.send("Server is running ⚡️");
+// });
+
+// app.get("/", (req: Request, res: Response) => {
+//   console.log(req.query); // { email: 'test@email.com' }
+//   res.send("Server is running ⚡️");
+// });
+
+app.get("/", logger, (req: Request, res: Response) => {
   res.send("Server is running ⚡️");
 });
 
