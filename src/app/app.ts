@@ -14,6 +14,30 @@ const logger = (req: Request, res: Response, next: NextFunction) => {
   next();
 };
 
+// router
+const userRouter = express.Router();
+
+app.use("/api/v1/users", userRouter);
+
+userRouter.get(
+  "/create-users",
+  async (req: Request, res: Response, next: NextFunction) => {
+    const user = req.body;
+
+    console.log(user);
+
+    try {
+      res.json({
+        status: true,
+        message: "User created successfully",
+        data: usehr,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
 // app.get("/:userId", (req: Request, res: Response) => {
 //   console.log(req.params); // { userId: '89' }
 //   res.send("Server is running ⚡️");
@@ -39,6 +63,16 @@ app.post("/", (req: Request, res: Response) => {
   res.json({
     message: "Request sent",
   });
+});
+
+// global error handling
+app.use((error: any, req: Request, res: Response, next: NextFunction) => {
+  if (error) {
+    res.status(400).json({
+      status: false,
+      message: "Something went wrong",
+    });
+  }
 });
 
 export default app;
