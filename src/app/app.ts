@@ -30,7 +30,7 @@ userRouter.get(
       res.json({
         status: true,
         message: "User created successfully",
-        data: usehr,
+        data: user,
       });
     } catch (error) {
       next(error);
@@ -62,6 +62,14 @@ app.post("/", (req: Request, res: Response) => {
   // res.send("Send Request");
   res.json({
     message: "Request sent",
+  });
+});
+
+// invalid route error handler
+app.use((req: Request, res: Response) => {
+  res.status(404).json({
+    status: false,
+    message: "Invalid route",
   });
 });
 
